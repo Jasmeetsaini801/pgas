@@ -46,7 +46,7 @@ while ($row=mysqli_fetch_array($ret)) {
 			</div>
 			<div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
 				<p class="footer-text m-0">
-Paying Guest Accomodation System @ 2019 All rights reserved </p>
+Paying Guest Accomodation System @ 2022 All rights reserved </p>
 			</div>
 		</div>
 	</footer>
