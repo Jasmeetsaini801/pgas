@@ -2,25 +2,28 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
+error_reporting(0);
 
-if(isset($_POST['login']))
+if(isset($_POST['submit']))
   {
-    $owemail=$_POST['email'];
-    $password=md5($_POST['password']);
-    $query=mysqli_query($con,"select ID from tblowner where  Email='$owemail' && Password='$password' ");
-    $ret=mysqli_fetch_array($query);
-    if($ret>0){
-      $_SESSION['pgasoid']=$ret['ID'];
-     header('location:dashboard.php');
-    }
-    else{
-    $msg="Invalid Details.";
-    }
+    $contactno=$_SESSION['contactno'];
+    $email=$_SESSION['email'];
+    $password=md5($_POST['newpassword']);
+
+        $query=mysqli_query($con,"update tblowner set Password='$password'  where  Email='$email' && MobileNumber='$contactno' ");
+   if($query)
+   {
+echo "<script>alert('Password successfully changed');</script>";
+session_destroy();
+   }
+  
   }
   ?>
+
+
 <!DOCTYPE html>
 <head>
-<title>Paying Guest Accomodation System | Owner Login </title>
+<title>Paying Guest Accomodation System | Forgot </title>
 
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 <!-- bootstrap-css -->
@@ -35,24 +38,38 @@ if(isset($_POST['login']))
 <link rel="stylesheet" href="css/font.css" type="text/css"/>
 <link href="css/font-awesome.css" rel="stylesheet"> 
 <!-- //font-awesome icons -->
-<script src="js/jquery2.0.3.min.js"></script>
+<script src="assets/js/modernizr.min.js"></script>
+<script type="text/javascript">
+function checkpass()
+{
+if(document.changepassword.newpassword.value!=document.changepassword.confirmpassword.value)
+{
+alert('New Password and Confirm Password field does not match');
+document.changepassword.confirmpassword.focus();
+return false;
+}
+return true;
+} 
+
+</script>
 </head>
 <body>
 <div class="log-w3">
 <div class="w3layouts-main">
-	<h2>Sign In Now</h2>
-		<form action="#" method="post" name="login">
+	<h2>Recover Password</h2>
+		<form action="" method="post" name="changepassword" onsubmit="return checkpass();">
 			<p style="font-size:16px; color:red" align="center"> <?php if($msg){
     echo $msg;
   }  ?> </p>
-			<input type="email" class="ggg" name="email" placeholder="E-MAIL" required="true">
-			<input type="password" class="ggg" name="password" placeholder="PASSWORD" required="true">
+			<input class="ggg" type="password" required="true" name="newpassword" placeholder="New Password">
+      <input class="ggg" type="password" name="confirmpassword" required="true" placeholder="Confirm Your Password">
 			
-			<a href="forgot-password.php">Forgot Password?</a>
+			
+			
 				<div class="clearfix"></div>
-				<input type="submit" value="Sign In" name="login">
+				<input type="submit" value="Reset" name="submit">
 		</form>
-		<p>Don't Have an Account ?<a href="owner-registration.php">Create an account</a></p>
+		<p><a href="login.php">Sign In</a></p>
 </div>
 </div>
 <script src="js/bootstrap.js"></script>

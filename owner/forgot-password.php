@@ -3,24 +3,26 @@ session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
 
-if(isset($_POST['login']))
+if(isset($_POST['submit']))
   {
-    $owemail=$_POST['email'];
-    $password=md5($_POST['password']);
-    $query=mysqli_query($con,"select ID from tblowner where  Email='$owemail' && Password='$password' ");
+    $contactno=$_POST['contactno'];
+    $email=$_POST['email'];
+
+        $query=mysqli_query($con,"select ID from tblowner where  Email='$email' and MobileNumber='$contactno' ");
     $ret=mysqli_fetch_array($query);
     if($ret>0){
-      $_SESSION['pgasoid']=$ret['ID'];
-     header('location:dashboard.php');
+      $_SESSION['contactno']=$contactno;
+      $_SESSION['email']=$email;
+     header('location:reset-password.php');
     }
     else{
-    $msg="Invalid Details.";
+      $msg="Invalid Details. Please try again.";
     }
   }
   ?>
 <!DOCTYPE html>
 <head>
-<title>Paying Guest Accomodation System | Owner Login </title>
+<title>Paying Guest Accomodation System | Forgot </title>
 
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 <!-- bootstrap-css -->
@@ -40,19 +42,20 @@ if(isset($_POST['login']))
 <body>
 <div class="log-w3">
 <div class="w3layouts-main">
-	<h2>Sign In Now</h2>
-		<form action="#" method="post" name="login">
+	<h2>Forgot Password</h2>
+		<form action="#" method="post" name="submit">
 			<p style="font-size:16px; color:red" align="center"> <?php if($msg){
     echo $msg;
   }  ?> </p>
-			<input type="email" class="ggg" name="email" placeholder="E-MAIL" required="true">
-			<input type="password" class="ggg" name="password" placeholder="PASSWORD" required="true">
+			<input type="email" class="ggg" name="email" placeholder="Email" required="true">
+       <input class="ggg"  type="text" name="contactno" required="" placeholder="Mobile Number">
 			
-			<a href="forgot-password.php">Forgot Password?</a>
+			
+			
 				<div class="clearfix"></div>
-				<input type="submit" value="Sign In" name="login">
+				<input type="submit" value="Reset" name="submit">
 		</form>
-		<p>Don't Have an Account ?<a href="owner-registration.php">Create an account</a></p>
+		<p><a href="login.php">Sign In</a></p>
 </div>
 </div>
 <script src="js/bootstrap.js"></script>
